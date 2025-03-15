@@ -1,21 +1,29 @@
-name: Github actions demo for Flutter # ワークフローの名前
+name: Github actions demo for Flutter
 
 on:
   push:
     branches:
-      - main # mainブランチにpushした時にワークフローが実行
+      - main
 
 jobs:
   flutter-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code # STEP1: レポジトリのコードを取得
+      - name: Check out repository code
         uses: actions/checkout@v4
-      - name: Set up Flutter # STEP2: Flutterをインストール
+      - name: create assets
+        run: |
+          mkdir assets
+      - name: create assets/strings.txt
+        run: |
+          echo "$STRINGS_BASE64" | base64 -d > assets/strings.txt
+        env:
+          FIREBASE_OPTIONS_BASE64: ${{ secrets.STRINGS_BASE64 }}
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-      - name: Fetches and resolves project dependencies # STEP3: 「flutter pub get」を実行
+      - name: Fetches and resolves project dependencies 
         run: flutter pub get
-      - name: Run tests # STEP4: テストを実行
+      - name: Run tests 
         run: flutter test
