@@ -19,6 +19,9 @@ jobs:
           echo "$STRINGS_BASE64" | base64 -d > assets/strings.txt
         env:
           STRINGS_BASE64: ${{ secrets.STRINGS_BASE64 }}
+      - name: cat assets/strings.txt
+        run: |
+          cat assets/strings.txt
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
